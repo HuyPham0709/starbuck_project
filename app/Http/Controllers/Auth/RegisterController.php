@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -9,7 +10,7 @@ class RegisterController extends Controller
 {
     public function showRegistrationForm()
     {
-        return view('auth.register');
+        return view('auth.register'); // Đảm bảo rằng bạn có view này
     }
 
     public function register(Request $request)
@@ -31,4 +32,3 @@ class RegisterController extends Controller
         return redirect()->route('login')->with('success', 'Đăng ký thành công.');
     }
 }
-
