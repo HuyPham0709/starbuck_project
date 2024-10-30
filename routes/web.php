@@ -1,21 +1,29 @@
 <?php
-
-use App\Http\Controllers\Auth\RegisteredUserController; // Sửa tên controller ở đây
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginRegisterController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
 Route::get('/', function () {
-    return view('home');
+    return view('welcome');
 });
 
-// Route đăng nhập
-Route::get('/login', [AuthenticatedSessionController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthenticatedSessionController::class, 'login']);
 
-// Route đăng xuất
-Route::post('/logout', [AuthenticatedSessionController::class, 'logout'])->name('logout');
 
-// Route đăng ký
-Route::get('/register', [RegisterController::class, 'create'])->name('register');
-Route::post('/register', [RegisterController::class, 'store']);
+Route::controller(LoginRegisterController::class)->group(function () {
+    Route::get('/register', 'register')->name('register');
+    Route::post('/register', 'store');
+    Route::get('/login', 'login')->name('login');
+    Route::post('/login', 'authenticate');
+    Route::get('/dashboard', 'dashboard')->middleware('auth')->name('dashboard');
+    Route::post('/logout', 'logout')->middleware('auth')->name('logout');
+});
